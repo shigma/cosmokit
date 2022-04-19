@@ -20,9 +20,9 @@
   "scripts": {
     "build": "tsc -b",
     "test": "mocha -r esbuild-register tests/*.spec.ts",
-    "test:text": "rimraf coverage && c8 -r text test",
-    "test:json": "rimraf coverage && c8 -r json test",
-    "test:html": "rimraf coverage && c8 -r html test"
+    "test:text": "rimraf coverage && c8 -r text yarn test",
+    "test:json": "rimraf coverage && c8 -r json yarn test",
+    "test:html": "rimraf coverage && c8 -r html yarn test"
   },
   "devDependencies": {
     "@types/chai": "^4.3.0",
