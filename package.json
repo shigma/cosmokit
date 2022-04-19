@@ -1,9 +1,8 @@
 {
   "name": "tikloot",
-  "description": "Just a toolkit",
-  "version": "1.0.1",
-  "main": "lib/node.js",
-  "module": "lib/browser.js",
+  "description": "A tiny object toolkit",
+  "version": "1.0.2",
+  "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
     "lib"
@@ -20,7 +19,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc -b",
-    "test": "mocha",
+    "test": "mocha -r esbuild-register tests/*.spec.ts",
     "test:text": "rimraf coverage && c8 -r text test",
     "test:json": "rimraf coverage && c8 -r json test",
     "test:html": "rimraf coverage && c8 -r html test"

@@ -6,6 +6,8 @@ export type Promisify<T> = Promise<T extends Promise<infer S> ? S : T>
 export type Awaitable<T> = [T] extends [Promise<unknown>] ? T : T | Promise<T>
 export type Intersect<U> = (U extends any ? (arg: U) => void : never) extends ((arg: infer I) => void) ? I : never
 
+export function noop(): any {}
+
 export function isNullable(value: any) {
   return value === null || value === undefined
 }
