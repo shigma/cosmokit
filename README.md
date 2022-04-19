@@ -1,6 +1,6 @@
-# Tikloot
+# cosmokit
 
-[![Codecov](https://img.shields.io/codecov/c/github/cosmotype/tikloot?style=flat-square)](https://codecov.io/gh/cosmotype/tikloot)
-[![npm](https://img.shields.io/npm/v/tikloot?style=flat-square)](https://www.npmjs.com/package/tikloot)
+[![Codecov](https://img.shields.io/codecov/c/github/cosmotype/cosmokit?style=flat-square)](https://codecov.io/gh/cosmotype/cosmokit)
+[![npm](https://img.shields.io/npm/v/cosmokit?style=flat-square)](https://www.npmjs.com/package/cosmokit)
 
-A tiny object toolkit.
+A collection of common utilities.

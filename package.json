@@ -1,7 +1,7 @@
 {
-  "name": "tikloot",
-  "description": "A tiny object toolkit",
-  "version": "1.0.2",
+  "name": "cosmokit",
+  "description": "A collection of common utilities",
+  "version": "1.1.0",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
@@ -9,12 +9,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cosmotype/tikloot.git"
+    "url": "git+https://github.com/cosmotype/cosmokit.git"
   },
   "bugs": {
-    "url": "https://github.com/cosmotype/tikloot/issues"
+    "url": "https://github.com/cosmotype/cosmokit/issues"
   },
-  "homepage": "https://github.com/cosmotype/tikloot",
+  "homepage": "https://github.com/cosmotype/cosmokit",
   "author": "Shigma <shigma10826@gmail.com>",
   "license": "MIT",
   "scripts": {
@@ -25,9 +25,11 @@
     "test:html": "rimraf coverage && c8 -r html yarn test"
   },
   "devDependencies": {
+    "@sinonjs/fake-timers": "^6.0.1",
     "@types/chai": "^4.3.0",
     "@types/mocha": "^9.1.0",
     "@types/node": "^17.0.23",
+    "@types/sinonjs__fake-timers": "^6.0.4",
     "c8": "^7.11.0",
     "chai": "^4.3.6",
     "esbuild": "^0.14.31",
