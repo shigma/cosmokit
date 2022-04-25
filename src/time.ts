@@ -73,7 +73,7 @@ export namespace Time {
     return ms + 'ms'
   }
 
-  function toDigits(source: number, length = 2) {
+  export function toDigits(source: number, length = 2) {
     return source.toString().padStart(length, '0')
   }
 

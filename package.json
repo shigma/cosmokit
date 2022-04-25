@@ -1,8 +1,9 @@
 {
   "name": "cosmokit",
   "description": "A collection of common utilities",
-  "version": "1.1.0",
-  "main": "lib/index.js",
+  "version": "1.1.2",
+  "main": "lib/node.js",
+  "module": "lib/browser.js",
   "typings": "lib/index.d.ts",
   "files": [
     "lib"
