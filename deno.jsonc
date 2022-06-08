@@ -2,6 +2,6 @@
   "tasks": {
     "test": "deno test tests/ -A",
     "build": "deno run -A scripts/build_npm.ts",
-    "test:json": "deno test tests/ -A --coverage=cov"
+    "test:cov": "deno test tests/ -A --coverage=coverage"
   }
 }

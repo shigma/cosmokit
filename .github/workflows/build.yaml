@@ -17,7 +17,7 @@ jobs:
         with:
           deno-version: 1.x
       - name: Unit Test
-        run: deno task test:json
+        run: deno task test:cov
       - name: Generate Lcov Report
         run: deno --unstable coverage ./coverage --lcov > coverage.lcov
       - name: Report Coverage
