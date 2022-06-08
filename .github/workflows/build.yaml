@@ -9,20 +9,28 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [14, 16]
+
     steps:
       - name: Check out
-        uses: actions/checkout@v3
-      - name: Set up Deno
-        uses: denoland/setup-deno@v1.0.0
+        uses: actions/checkout@v1
+      - name: Set up Node
+        uses: actions/setup-node@v2
         with:
-          deno-version: 1.x
+          node-version: ${{ matrix.node-version }}
+      - name: Install
+        run: yarn
+      - name: Build
+        run: yarn build
       - name: Unit Test
-        run: deno task test:cov
-      - name: Generate Lcov Report
-        run: deno --unstable coverage ./coverage --lcov > coverage.lcov
+        run: yarn test:json
       - name: Report Coverage
+        if: ${{ matrix.node-version == 14 }}
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage.lcov
+          files: ./coverage/coverage-final.json
           name: codecov

@@ -17,7 +17,7 @@ export function isPlainObject(data: any) {
 }
 
 export function valueMap<T, U>(object: Dict<T>, transform: (value: T, key: string) => U): Dict<U> {
-  return Object.fromEntries(Object.entries(object).map(([key, value]) => [key, transform(value!, key)]))
+  return Object.fromEntries(Object.entries(object).map(([key, value]) => [key, transform(value, key)]))
 }
 
 export function clone<T>(source: T): T
