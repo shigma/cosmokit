@@ -7,11 +7,6 @@ A collection of common utilities.
 
 ## Usage
 
-### Deno
-```ts
-import cosmokit from "https://cdn.skypack.dev/cosmokit@>=1.1.2?dts"
-```
-
 ### Node.js
 ```powershell
 yarn add cosmokit
@@ -19,3 +14,8 @@ yarn add cosmokit
 ```ts
 import cosmokit from "cosmokit"
 ``` 
+
+### Deno
+```ts
+import cosmokit from "https://cdn.skypack.dev/cosmokit@>=1.1.2"
+```
