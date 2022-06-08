@@ -9,28 +9,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: [14, 16]
-
     steps:
       - name: Check out
-        uses: actions/checkout@v1
-      - name: Set up Node
-        uses: actions/setup-node@v2
+        uses: actions/checkout@v3
+      - name: Set up Deno
+        uses: denoland/setup-deno@v1.0.0
         with:
-          node-version: ${{ matrix.node-version }}
-      - name: Install
-        run: yarn
-      - name: Build
-        run: yarn build
+          deno-version: 1.x
       - name: Unit Test
-        run: yarn test:json
+        run: deno task test:json
       - name: Report Coverage
-        if: ${{ matrix.node-version == 14 }}
         uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage/coverage-final.json
-          name: codecov
