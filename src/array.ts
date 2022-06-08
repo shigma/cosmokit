@@ -1,3 +1,5 @@
+import { isNullable } from './misc'
+
 export function contain(array1: readonly any[], array2: readonly any[]) {
   return array2.every(item => array1.includes(item))
 }
@@ -27,5 +29,5 @@ export function remove<T>(list: T[], item: T) {
 }
 
 export function makeArray<T>(source: T | T[]) {
-  return Array.isArray(source) ? source : (source === null || source === undefined) ? [] : [source]
+  return Array.isArray(source) ? source : isNullable(source) ? [] : [source]
 }
