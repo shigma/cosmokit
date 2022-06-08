@@ -20,3 +20,7 @@ jobs:
         run: deno task test:json
       - name: Report Coverage
         uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./cov
+          name: codecov
