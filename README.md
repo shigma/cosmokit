@@ -17,5 +17,5 @@ import cosmokit from "cosmokit"
 
 ### Deno
 ```ts
-import cosmokit from "https://cdn.skypack.dev/cosmokit@>=1.1.2"
+import cosmokit from "https://cdn.skypack.dev/cosmokit"
 ```
