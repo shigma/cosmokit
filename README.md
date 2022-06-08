@@ -4,3 +4,18 @@
 [![npm](https://img.shields.io/npm/v/cosmokit?style=flat-square)](https://www.npmjs.com/package/cosmokit)
 
 A collection of common utilities.
+
+## Usage
+
+### Node.js
+```powershell
+yarn add cosmokit
+```
+```ts
+import cosmokit from "cosmokit"
+``` 
+
+### Deno
+```ts
+import cosmokit from "https://cdn.skypack.dev/cosmokit"
+```
