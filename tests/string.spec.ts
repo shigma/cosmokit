@@ -1,4 +1,4 @@
-import { capitalize, camelCase, paramCase, snakeCase, uncapitalize } from '../src'
+import { capitalize, camelCase, paramCase, snakeCase, uncapitalize, sanitize } from '../src'
 import { expect } from 'chai'
 
 describe('String Manipulations', () => {
@@ -10,15 +10,19 @@ describe('String Manipulations', () => {
     expect(uncapitalize('Aa-aa_aA')).to.equal('aa-aa_aA')
   })
 
-  it('camel case', () => {
+  it('camelCase', () => {
     expect(camelCase('aa-aa_aA')).to.equal('aaAaAA')
   })
 
-  it('param case', () => {
+  it('paramCase', () => {
     expect(paramCase('aa-aa_aA')).to.equal('aa-aa-a-a')
   })
 
-  it('snake case', () => {
+  it('snakeCase', () => {
     expect(snakeCase('aa-aa_aA')).to.equal('aa_aa_a_a')
+  })
+
+  it('sanitize', () => {
+    expect(sanitize('aa/bb/cc/')).to.equal('/aa/bb/cc')
   })
 })

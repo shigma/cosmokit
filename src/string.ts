@@ -45,3 +45,12 @@ namespace Letter {
 export type camelize<S extends string> = S extends `${infer L}-${infer M}${infer R}` ? `${L}${Letter.ToUpper<M>}${camelize<R>}` : S
 export type hyphenate<S extends string> = S extends `${infer L}${infer R}` ? `${Letter.ToLower<L, '-'>}${hyphenate<R>}` : S
 /* eslint-enable @typescript-eslint/naming-convention */
+
+export function trimSlash(source: string) {
+  return source.replace(/\/$/, '')
+}
+
+export function sanitize(source: string) {
+  if (!source.startsWith('/')) source = '/' + source
+  return trimSlash(source)
+}
