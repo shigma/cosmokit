@@ -1,6 +1,8 @@
 name: Test
 
-on: [push]
+on:
+  push:
+  pull_request:
 
 env:
   CI: true
@@ -12,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [14, 16]
+        node-version: [12, 14, 16, 18]
 
     steps:
       - name: Check out
