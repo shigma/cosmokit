@@ -8,14 +8,17 @@ A collection of common utilities.
 ## Usage
 
 ### Node.js
-```powershell
-yarn add cosmokit
+
+```sh
+npm install cosmokit
 ```
+
 ```ts
-import cosmokit from "cosmokit"
+import cosmokit from 'cosmokit'
 ``` 
 
 ### Deno
+
 ```ts
-import cosmokit from "https://cdn.skypack.dev/cosmokit"
+import cosmokit from 'https://cdn.skypack.dev/cosmokit'
 ```
