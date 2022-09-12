@@ -8,7 +8,7 @@ export type Intersect<U> = (U extends any ? (arg: U) => void : never) extends ((
 
 export function noop(): any {}
 
-export function isNullable(value: any) {
+export function isNullable(value: any): value is null | undefined | void {
   return value === null || value === undefined
 }
 
