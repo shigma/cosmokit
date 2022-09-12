@@ -11,11 +11,17 @@ export function camelCase(source: string) {
 }
 
 export function paramCase(source: string) {
-  return uncapitalize(source).replace(/_/g, '-').replace(/(?<!^)[A-Z]/g, str => '-' + str.toLowerCase())
+  // do not use lookbehind assertion for Safari compatibility
+  return uncapitalize(source)
+    .replace(/_/g, '-')
+    .replace(/.[A-Z]+/g, str => str[0] + '-' + str.slice(1).toLowerCase())
 }
 
 export function snakeCase(source: string) {
-  return uncapitalize(source).replace(/-/g, '_').replace(/(?<!^)[A-Z]/g, str => '_' + str.toLowerCase())
+  // do not use lookbehind assertion for Safari compatibility
+  return uncapitalize(source)
+    .replace(/-/g, '_')
+    .replace(/.[A-Z]+/g, str => str[0] + '_' + str.slice(1).toLowerCase())
 }
 
 export const camelize = camelCase

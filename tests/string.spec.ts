@@ -15,11 +15,11 @@ describe('String Manipulations', () => {
   })
 
   it('paramCase', () => {
-    expect(paramCase('aa-aa_aA')).to.equal('aa-aa-a-a')
+    expect(paramCase('aa-aa_aAA')).to.equal('aa-aa-a-aa')
   })
 
   it('snakeCase', () => {
-    expect(snakeCase('aa-aa_aA')).to.equal('aa_aa_a_a')
+    expect(snakeCase('aa-aa_aAA')).to.equal('aa_aa_a_aa')
   })
 
   it('sanitize', () => {
