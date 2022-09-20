@@ -34,6 +34,24 @@ export function clone(source: any) {
   return valueMap(source, clone)
 }
 
+export function deepEqual(a: any, b: any): boolean {
+  if (a === b) return true
+  if (typeof a !== typeof b) return false
+  if (typeof a !== 'object') return false
+  if (!a || !b) return false
+
+  // check array
+  if (Array.isArray(a)) {
+    if (!Array.isArray(b) || a.length !== b.length) return false
+    return a.every((item, index) => deepEqual(item, b[index]))
+  } else if (Array.isArray(b)) {
+    return false
+  }
+
+  // check object
+  return Object.keys({ ...a, ...b }).every(key => deepEqual(a[key], b[key]))
+}
+
 export function pick<T, K extends keyof T>(source: T, keys?: Iterable<K>, forced?: boolean) {
   if (!keys) return { ...source }
   const result = {} as Pick<T, K>
