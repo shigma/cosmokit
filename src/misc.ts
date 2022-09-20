@@ -1,4 +1,4 @@
-export type Dict<T = any, K extends string = string> = { [key in K]?: T }
+export type Dict<T = any, K extends string = string> = { [key in K]: T }
 export type Get<T extends {}, K> = K extends keyof T ? T[K] : never
 export type Extract<S, T, U = S> = S extends T ? U : never
 export type MaybeArray<T> = [T] extends [unknown[]] ? T : T | T[]
