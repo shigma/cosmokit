@@ -25,6 +25,8 @@ export function remove<T>(list: T[], item: T) {
   if (index >= 0) {
     list.splice(index, 1)
     return true
+  } else {
+    return false
   }
 }
 
