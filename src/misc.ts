@@ -70,8 +70,8 @@ export function omit<T, K extends keyof T>(source: T, keys?: Iterable<K>) {
   return result
 }
 
-export function defineProperty<T, K extends keyof T>(object: T, key: K, value: T[K]): void
-export function defineProperty<T, K extends keyof any>(object: T, key: K, value: any): void
+export function defineProperty<T, K extends keyof T>(object: T, key: K, value: T[K]): T
+export function defineProperty<T, K extends keyof any>(object: T, key: K, value: any): T
 export function defineProperty<T, K extends keyof any>(object: T, key: K, value: any) {
-  Object.defineProperty(object, key, { writable: true, value })
+  return Object.defineProperty(object, key, { writable: true, value })
 }
