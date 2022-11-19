@@ -20,5 +20,5 @@ import cosmokit from 'cosmokit'
 ### Deno
 
 ```ts
-import cosmokit from 'npm:cosmokit'
+import cosmokit from 'npm:cosmokit@latest'
 ```
