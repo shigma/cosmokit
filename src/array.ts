@@ -30,6 +30,6 @@ export function remove<T>(list: T[], item: T) {
   }
 }
 
-export function makeArray<T>(source: T | T[]) {
+export function makeArray<T>(source: null | undefined | T | T[]) {
   return Array.isArray(source) ? source : isNullable(source) ? [] : [source]
 }
