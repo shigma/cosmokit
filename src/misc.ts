@@ -34,8 +34,9 @@ export function clone(source: any) {
   return valueMap(source, clone)
 }
 
-export function deepEqual(a: any, b: any): boolean {
+export function deepEqual(a: any, b: any, strict?: boolean): boolean {
   if (a === b) return true
+  if (!strict && isNullable(a) && isNullable(b)) return true
   if (typeof a !== typeof b) return false
   if (typeof a !== 'object') return false
   if (!a || !b) return false
