@@ -1,4 +1,5 @@
 export * from './array'
+export * from './binary'
 export * from './misc'
 export * from './string'
 export * from './time'
