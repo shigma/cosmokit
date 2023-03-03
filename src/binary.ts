@@ -1,4 +1,4 @@
-export function arrayBufferToBase64(buffer: ArrayBuffer) {
+export function arrayBufferToBase64(buffer: ArrayBufferLike) {
   if (typeof Buffer !== 'undefined') {
     return Buffer.from(buffer).toString('base64')
   }
