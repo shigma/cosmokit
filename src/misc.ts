@@ -50,7 +50,7 @@ export function deepEqual(a: any, b: any, strict?: boolean): boolean {
   }
 
   // check object
-  return Object.keys({ ...a, ...b }).every(key => deepEqual(a[key], b[key]))
+  return Object.keys({ ...a, ...b }).every(key => deepEqual(a[key], b[key], strict))
 }
 
 export function pick<T extends object, K extends keyof T>(source: T, keys?: Iterable<K>, forced?: boolean) {
