@@ -1,4 +1,4 @@
-import { isNullable } from './misc'
+import { isNullable } from './misc.ts'
 
 export function contain(array1: readonly any[], array2: readonly any[]) {
   return array2.every(item => array1.includes(item))

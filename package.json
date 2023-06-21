@@ -41,6 +41,6 @@
     "esbuild-register": "^3.4.2",
     "mocha": "^9.2.2",
     "shx": "^0.3.4",
-    "typescript": "^5.0.4"
+    "typescript": "^5.1.3"
   }
 }
