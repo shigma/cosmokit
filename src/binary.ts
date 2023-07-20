@@ -13,7 +13,7 @@ export function arrayBufferToBase64(buffer: ArrayBufferLike) {
 export function base64ToArrayBuffer(base64: string) {
   if (typeof Buffer !== 'undefined') {
     const buf = Buffer.from(base64, "base64");
-    return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.length);
+    return new Uint8Array(buf.buffer, buf.byteOffset, buf.length);
   }
   const binary = atob(base64.replace(/\s/g, ''))
   const buffer = new Uint8Array(binary.length)
