@@ -16,8 +16,8 @@ export function isPlainObject(data: any) {
   return data && typeof data === 'object' && !Array.isArray(data)
 }
 
-export function valueMap<T, U>(object: Dict<T>, transform: (value: T, key: string) => U): Dict<U> {
-  return Object.fromEntries(Object.entries(object).map(([key, value]) => [key, transform(value, key)]))
+export function valueMap<U, T, K extends string>(object: Dict<T, K>, transform: (value: T, key: string) => U) {
+  return Object.fromEntries(Object.entries(object).map(([key, value]) => [key, transform(value as any, key)])) as Dict<U, K>
 }
 
 export function is<K extends keyof typeof globalThis>(type: K, value: any): value is InstanceType<typeof globalThis[K]> {
