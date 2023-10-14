@@ -16,9 +16,17 @@ export function isPlainObject(data: any) {
   return data && typeof data === 'object' && !Array.isArray(data)
 }
 
-export function valueMap<U, T, K extends string>(object: Dict<T, K>, transform: (value: T, key: string) => U) {
-  return Object.fromEntries(Object.entries(object).map(([key, value]) => [key, transform(value as any, key)])) as Dict<U, K>
+export function filterKeys<T, K extends string, U extends K>(object: Dict<T, K>, filter: (key: K, value: T) => key is U): Dict<T, U>
+export function filterKeys<T, K extends string>(object: Dict<T, K>, filter: (key: K, value: T) => boolean): Dict<T, K>
+export function filterKeys(object: {}, filter: (key: string, value: any) => boolean) {
+  return Object.fromEntries(Object.entries(object).filter(([key, value]) => filter(key, value)))
 }
+
+export function mapValues<U, T, K extends string>(object: Dict<T, K>, transform: (value: T, key: K) => U) {
+  return Object.fromEntries(Object.entries(object).map(([key, value]) => [key, (transform as any)(value, key)])) as Dict<U, K>
+}
+
+export { mapValues as valueMap }
 
 export function is<K extends keyof typeof globalThis>(type: K, value: any): value is InstanceType<typeof globalThis[K]> {
   return type in globalThis && value instanceof (globalThis[type] as any)
@@ -31,7 +39,7 @@ export function clone(source: any) {
   if (Array.isArray(source)) return source.map(clone)
   if (is('Date', source)) return new Date(source.valueOf())
   if (is('RegExp', source)) return new RegExp(source.source, source.flags)
-  return valueMap(source, clone)
+  return mapValues(source, clone)
 }
 
 export function deepEqual(a: any, b: any, strict?: boolean): boolean {
@@ -57,7 +65,7 @@ export function pick<T extends object, K extends keyof T>(source: T, keys?: Iter
   if (!keys) return { ...source }
   const result = {} as Pick<T, K>
   for (const key of keys) {
-    if (forced || key in source) result[key] = source[key]
+    if (forced || source[key] !== undefined) result[key] = source[key]
   }
   return result
 }

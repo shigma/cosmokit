@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { defineProperty, pick, omit } from '../src'
+import { defineProperty, pick, omit, clone, mapValues, filterKeys } from '../src'
 
 describe('Object Manipulations', () => {
   it('defineProperty', () => {
@@ -14,5 +14,17 @@ describe('Object Manipulations', () => {
 
   it('omit', () => {
     expect(omit({ a: 1, b: [2] }, ['b'])).to.deep.equal({ a: 1 })
+  })
+
+  it('clone', () => {
+    expect(clone({ a: 1, b: [2] })).to.deep.equal({ a: 1, b: [2] })
+  })
+
+  it('mapValues', () => {
+    expect(mapValues({ a: 1, b: 2 }, v => v * 2)).to.deep.equal({ a: 2, b: 4 })
+  })
+
+  it('filterKeys', () => {
+    expect(filterKeys({ a: 1, b: 2 }, k => k === 'a')).to.deep.equal({ a: 1 })
   })
 })
