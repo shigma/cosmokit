@@ -1,4 +1,4 @@
-import { capitalize, camelCase, paramCase, snakeCase, uncapitalize, sanitize } from '../src'
+import { capitalize, camelCase, paramCase, snakeCase, uncapitalize, sanitize, isNullOrEmpty } from '../src'
 import { expect } from 'chai'
 
 describe('String Manipulations', () => {
@@ -24,5 +24,13 @@ describe('String Manipulations', () => {
 
   it('sanitize', () => {
     expect(sanitize('aa/bb/cc/')).to.equal('/aa/bb/cc')
+  })
+
+  it('isNullOrEmpty', () => {
+    expect(isNullOrEmpty('')).to.equal(true)
+    expect(isNullOrEmpty('  ')).to.equal(true)
+    expect(isNullOrEmpty(null)).to.equal(true)
+    expect(isNullOrEmpty(undefined)).to.equal(true)
+    expect(isNullOrEmpty('text')).to.equal(false)
   })
 })

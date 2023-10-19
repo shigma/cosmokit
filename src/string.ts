@@ -1,3 +1,5 @@
+import { isNullable } from './misc'
+
 export function capitalize(source: string) {
   return source.charAt(0).toUpperCase() + source.slice(1)
 }
@@ -59,4 +61,8 @@ export function trimSlash(source: string) {
 export function sanitize(source: string) {
   if (!source.startsWith('/')) source = '/' + source
   return trimSlash(source)
+}
+
+export function isNullOrEmpty(source: any): source is null | undefined | string {
+  return isNullable(source) || (typeof source === 'string' && source.trim().length === 0)
 }
