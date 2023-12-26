@@ -28,7 +28,10 @@ export function mapValues<U, T, K extends string>(object: Dict<T, K>, transform:
 
 export { mapValues as valueMap }
 
-export function is<K extends keyof typeof globalThis>(type: K, value: any): value is InstanceType<typeof globalThis[K]> {
+export function is<K extends keyof typeof globalThis>(type: K): (value: any) => value is InstanceType<typeof globalThis[K]>
+export function is<K extends keyof typeof globalThis>(type: K, value: any): value is InstanceType<typeof globalThis[K]>
+export function is<K extends keyof typeof globalThis>(type: K, value?: any): any {
+  if (arguments.length === 1) return (value: any) => is(type, value)
   return type in globalThis && value instanceof (globalThis[type] as any)
     || Object.prototype.toString.call(value).slice(8, -1) === type
 }
@@ -49,16 +52,14 @@ export function deepEqual(a: any, b: any, strict?: boolean): boolean {
   if (typeof a !== 'object') return false
   if (!a || !b) return false
 
-  // check array
-  if (Array.isArray(a)) {
-    if (!Array.isArray(b) || a.length !== b.length) return false
-    return a.every((item, index) => deepEqual(item, b[index]))
-  } else if (Array.isArray(b)) {
-    return false
+  function check<T>(test: (x: any) => x is T, then: (a: T, b: T) => boolean) {
+    return test(a) ? test(b) ? then(a, b) : false : test(b) ? false : undefined
   }
 
-  // check object
-  return Object.keys({ ...a, ...b }).every(key => deepEqual(a[key], b[key], strict))
+  return check(Array.isArray, (a, b) => a.length === b.length && a.every((item, index) => deepEqual(item, b[index])))
+    ?? check(is('Date'), (a, b) => a.valueOf() === b.valueOf())
+    ?? check(is('RegExp'), (a, b) => a.source === b.source && a.flags === b.flags)
+    ?? Object.keys({ ...a, ...b }).every(key => deepEqual(a[key], b[key], strict))
 }
 
 export function pick<T extends object, K extends keyof T>(source: T, keys?: Iterable<K>, forced?: boolean) {
