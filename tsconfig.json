@@ -5,6 +5,7 @@
     "target": "es2022",
     "module": "commonjs",
     "strict": true,
+    "sourceMap": true,
     "declaration": true,
     "emitDeclarationOnly": true,
     "skipLibCheck": true,
