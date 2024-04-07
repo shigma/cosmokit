@@ -1,31 +1,5 @@
 import { isNullable, mapValues } from './misc'
 
-export function arrayBufferToBase64(buffer: ArrayBufferLike) {
-  if (typeof Buffer !== 'undefined') {
-    return Buffer.from(buffer).toString('base64')
-  }
-  let binary = ''
-  const bytes = new Uint8Array(buffer)
-  for (let i = 0; i < bytes.byteLength; i++) {
-    binary += String.fromCharCode(bytes[i])
-  }
-  return btoa(binary)
-}
-
-export function base64ToArrayBuffer(base64: string) {
-  if (typeof Buffer !== 'undefined') {
-    // https://nodejs.org/api/buffer.html#bufbyteoffset
-    const buf = Buffer.from(base64, 'base64')
-    return new Uint8Array(buf.buffer, buf.byteOffset, buf.length)
-  }
-  const binary = atob(base64.replace(/\s/g, ''))
-  const buffer = new Uint8Array(binary.length)
-  for (let i = 0; i < binary.length; i++) {
-    buffer[i] = binary.charCodeAt(i)
-  }
-  return buffer.buffer
-}
-
 type GlobalConstructorNames = keyof {
   [K in keyof typeof globalThis as typeof globalThis[K] extends abstract new (...args: any) => any ? K : never]: K
 }
@@ -38,13 +12,66 @@ export function is<K extends GlobalConstructorNames>(type: K, value?: any): any 
     || Object.prototype.toString.call(value).slice(8, -1) === type
 }
 
-export function isArrayBufferLike(value: any): value is ArrayBufferLike {
+function isArrayBufferLike(value: any): value is ArrayBufferLike {
   return is('ArrayBuffer', value) || is('SharedArrayBuffer', value)
 }
 
-export function isArrayBufferSource(value: any): value is ArrayBufferLike | ArrayBufferView {
+function isArrayBufferSource(value: any): value is Binary.Source {
   return isArrayBufferLike(value) || ArrayBuffer.isView(value)
 }
+
+export namespace Binary {
+  export type Source = ArrayBufferLike | ArrayBufferView
+
+  export const is = isArrayBufferLike
+  export const isSource = isArrayBufferSource
+
+  export function fromSource(source: Source) {
+    if (ArrayBuffer.isView(source)) {
+      // https://stackoverflow.com/questions/8609289/convert-a-binary-nodejs-buffer-to-javascript-arraybuffer#answer-31394257
+      return source.buffer.slice(source.byteOffset, source.byteOffset + source.byteLength)
+    } else {
+      return source
+    }
+  }
+
+  export function toBase64(source: ArrayBufferLike) {
+    if (typeof Buffer !== 'undefined') {
+      return Buffer.from(source).toString('base64')
+    }
+    let binary = ''
+    const bytes = new Uint8Array(source)
+    for (let i = 0; i < bytes.byteLength; i++) {
+      binary += String.fromCharCode(bytes[i])
+    }
+    return btoa(binary)
+  }
+
+  export function fromBase64(source: string) {
+    if (typeof Buffer !== 'undefined') return fromSource(Buffer.from(source, 'base64'))
+    return Uint8Array.from(atob(source), c => c.charCodeAt(0))
+  }
+
+  export function toHex(source: ArrayBufferLike) {
+    if (typeof Buffer !== 'undefined') return Buffer.from(source).toString('hex')
+    return Array.from(new Uint8Array(source), byte => byte.toString(16).padStart(2, '0')).join('')
+  }
+
+  export function fromHex(source: string) {
+    if (typeof Buffer !== 'undefined') return fromSource(Buffer.from(source, 'hex'))
+    const hex = source.length % 2 === 0 ? source : source.slice(0, source.length - 1)
+    const buffer: number[] = []
+    for (let i = 0; i < hex.length; i += 2) {
+      buffer.push(parseInt(`${hex[i]}${hex[i + 1]}`, 16))
+    }
+    return Uint8Array.from(buffer).buffer
+  }
+}
+
+export const base64ToArrayBuffer = Binary.fromBase64
+export const arrayBufferToBase64 = Binary.toBase64
+export const hexToArrayBuffer = Binary.fromHex
+export const arrayBufferToHex = Binary.toHex
 
 export function clone<T>(source: T): T
 export function clone(source: any) {
@@ -52,7 +79,7 @@ export function clone(source: any) {
   if (Array.isArray(source)) return source.map(clone)
   if (is('Date', source)) return new Date(source.valueOf())
   if (is('RegExp', source)) return new RegExp(source.source, source.flags)
-  if (is('ArrayBuffer', source)) return source.slice(0)
+  if (isArrayBufferLike(source)) return source.slice(0)
   if (ArrayBuffer.isView(source)) return source.buffer.slice(source.byteOffset, source.byteOffset + source.byteLength)
   return mapValues(source, clone)
 }
@@ -71,5 +98,14 @@ export function deepEqual(a: any, b: any, strict?: boolean): boolean {
   return check(Array.isArray, (a, b) => a.length === b.length && a.every((item, index) => deepEqual(item, b[index])))
     ?? check(is('Date'), (a, b) => a.valueOf() === b.valueOf())
     ?? check(is('RegExp'), (a, b) => a.source === b.source && a.flags === b.flags)
+    ?? check(isArrayBufferLike, (a, b) => {
+      if (a.byteLength !== b.byteLength) return false
+      const viewA = new Uint8Array(a)
+      const viewB = new Uint8Array(b)
+      for (let i = 0; i < viewA.length; i++) {
+        if (viewA[i] !== viewB[i]) return false
+      }
+      return true
+    })
     ?? Object.keys({ ...a, ...b }).every(key => deepEqual(a[key], b[key], strict))
 }
