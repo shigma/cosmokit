@@ -21,7 +21,7 @@ export function deduplicate<T>(array: readonly T[]) {
 }
 
 export function remove<T>(list: T[], item: T) {
-  const index = list.indexOf(item)
+  const index = list?.indexOf(item)
   if (index >= 0) {
     list.splice(index, 1)
     return true
