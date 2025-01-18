@@ -1,5 +1,6 @@
 import { expect } from 'chai'
 import { deepEqual, defineProperty, pick, omit, clone, mapValues, filterKeys } from '../src'
+import assert from 'node:assert'
 
 describe('Object Manipulations', () => {
   it('defineProperty', () => {
@@ -17,7 +18,13 @@ describe('Object Manipulations', () => {
   })
 
   it('clone', () => {
-    expect(clone({ a: 1, b: [2] })).to.deep.equal({ a: 1, b: [2] })
+    assert.deepStrictEqual(clone(1), 1)
+    assert.deepStrictEqual(clone('foo'), 'foo')
+    assert.deepStrictEqual(clone(/test/gi), /test/gi)
+    assert.deepStrictEqual(clone([true, false]), [true, false])
+    assert.deepStrictEqual(clone({ a: 1, b: [2] }), { a: 1, b: [2] })
+    class A { b = 2 }
+    assert.deepStrictEqual(clone(new A()), new A())
   })
 
   it('mapValues', () => {

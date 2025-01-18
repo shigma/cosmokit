@@ -1,4 +1,4 @@
-import { isNullable, mapValues } from './misc'
+import { isNullable } from './misc'
 
 type GlobalConstructorNames = keyof {
   [K in keyof typeof globalThis as typeof globalThis[K] extends abstract new (...args: any) => any ? K : never]: K
@@ -81,7 +81,11 @@ export function clone(source: any) {
   if (is('RegExp', source)) return new RegExp(source.source, source.flags)
   if (isArrayBufferLike(source)) return source.slice(0)
   if (ArrayBuffer.isView(source)) return source.buffer.slice(source.byteOffset, source.byteOffset + source.byteLength)
-  return mapValues(source, clone)
+  const result = Object.create(Object.getPrototypeOf(source))
+  for (const key of Reflect.ownKeys(source)) {
+    Reflect.defineProperty(result, key, Reflect.getOwnPropertyDescriptor(source, key)!)
+  }
+  return result
 }
 
 export function deepEqual(a: any, b: any, strict?: boolean): boolean {

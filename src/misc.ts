@@ -12,6 +12,10 @@ export function isNullable(value: any): value is null | undefined | void {
   return value === null || value === undefined
 }
 
+export function isNonNullable<T>(value: T): value is NonNullable<T> {
+  return !isNullable(value)
+}
+
 export function isPlainObject(data: any) {
   return data && typeof data === 'object' && !Array.isArray(data)
 }
