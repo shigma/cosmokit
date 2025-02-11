@@ -74,16 +74,30 @@ export const hexToArrayBuffer = Binary.fromHex
 export const arrayBufferToHex = Binary.toHex
 
 export function clone<T>(source: T): T
-export function clone(source: any) {
+export function clone(source: any, refs = new Map<any, any>()) {
   if (!source || typeof source !== 'object') return source
-  if (Array.isArray(source)) return source.map(clone)
   if (is('Date', source)) return new Date(source.valueOf())
   if (is('RegExp', source)) return new RegExp(source.source, source.flags)
   if (isArrayBufferLike(source)) return source.slice(0)
   if (ArrayBuffer.isView(source)) return source.buffer.slice(source.byteOffset, source.byteOffset + source.byteLength)
+  const cached = refs.get(source)
+  if (cached) return cached
+  if (Array.isArray(source)) {
+    const result: any[] = []
+    refs.set(source, result)
+    source.forEach((value, index) => {
+      result[index] = Reflect.apply(clone, null, [value, refs])
+    })
+    return result
+  }
   const result = Object.create(Object.getPrototypeOf(source))
+  refs.set(source, result)
   for (const key of Reflect.ownKeys(source)) {
-    Reflect.defineProperty(result, key, Reflect.getOwnPropertyDescriptor(source, key)!)
+    const descriptor = { ...Reflect.getOwnPropertyDescriptor(source, key) }
+    if ('value' in descriptor) {
+      descriptor.value = Reflect.apply(clone, null, [descriptor.value, refs])
+    }
+    Reflect.defineProperty(result, key, descriptor)
   }
   return result
 }

@@ -23,8 +23,14 @@ describe('Object Manipulations', () => {
     assert.deepStrictEqual(clone(/test/gi), /test/gi)
     assert.deepStrictEqual(clone([true, false]), [true, false])
     assert.deepStrictEqual(clone({ a: 1, b: [2] }), { a: 1, b: [2] })
-    class A { b = 2 }
+    class A { b = 1 }
     assert.deepStrictEqual(clone(new A()), new A())
+    const a: any = {}
+    a.a = a
+    assert.deepStrictEqual(clone(a), a)
+    const b: any = []
+    b.push(b)
+    assert.deepStrictEqual(clone(b), b)
   })
 
   it('mapValues', () => {

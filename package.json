@@ -1,7 +1,7 @@
 {
   "name": "cosmokit",
   "description": "A collection of common utilities",
-  "version": "1.7.0",
+  "version": "1.7.2",
   "sideEffects": false,
   "type": "module",
   "main": "lib/index.cjs",
