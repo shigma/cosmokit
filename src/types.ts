@@ -21,15 +21,15 @@ function isArrayBufferSource(value: any): value is Binary.Source {
 }
 
 export namespace Binary {
-  export type Source = ArrayBufferLike | ArrayBufferView
+  export type Source<T extends ArrayBufferLike = ArrayBufferLike> = T | ArrayBufferView<T>
 
   export const is = isArrayBufferLike
   export const isSource = isArrayBufferSource
 
-  export function fromSource(source: Source) {
+  export function fromSource<T extends ArrayBufferLike>(source: Source<T>): T {
     if (ArrayBuffer.isView(source)) {
       // https://stackoverflow.com/questions/8609289/convert-a-binary-nodejs-buffer-to-javascript-arraybuffer#answer-31394257
-      return source.buffer.slice(source.byteOffset, source.byteOffset + source.byteLength)
+      return source.buffer.slice(source.byteOffset, source.byteOffset + source.byteLength) as T
     } else {
       return source
     }
