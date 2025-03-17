@@ -52,6 +52,11 @@ export type camelize<S extends string> = S extends `${infer L}-${infer M}${infer
 export type hyphenate<S extends string> = S extends `${infer L}${infer R}` ? `${Letter.ToLower<L, '-'>}${hyphenate<R>}` : S
 /* eslint-enable @typescript-eslint/naming-convention */
 
+export function formatProperty(key: keyof any) {
+  if (typeof key !== 'string') return `[${key.toString()}]`
+  return /^[a-z_$][\w$]*$/i.test(key) ? `.${key}` : `[${JSON.stringify(key)}]`
+}
+
 export function trimSlash(source: string) {
   return source.replace(/\/$/, '')
 }
