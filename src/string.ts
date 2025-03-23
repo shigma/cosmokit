@@ -10,18 +10,52 @@ export function camelCase(source: string) {
   return source.replace(/[_-][a-z]/g, str => str.slice(1).toUpperCase())
 }
 
+const enum State {
+  DELIM,
+  UPPER,
+  LOWER,
+}
+
+function tokenize(source: string, delimiters: number[], delimiter: number) {
+  const output: number[] = []
+  let state = State.DELIM
+  for (let i = 0; i < source.length; i++) {
+    const code = source.charCodeAt(i)
+    if (code >= 65 && code <= 90) {
+      if (state === State.UPPER) {
+        const next = source.charCodeAt(i + 1)
+        if (next >= 97 && next <= 122) {
+          output.push(delimiter)
+        }
+        output.push(code + 32)
+      } else {
+        if (state !== State.DELIM) {
+          output.push(delimiter)
+        }
+        output.push(code + 32)
+      }
+      state = State.UPPER
+    } else if (code >= 97 && code <= 122) {
+      output.push(code)
+      state = State.LOWER
+    } else if (delimiters.includes(code)) {
+      if (state !== State.DELIM) {
+        output.push(delimiter)
+      }
+      state = State.DELIM
+    } else {
+      output.push(code)
+    }
+  }
+  return String.fromCharCode(...output)
+}
+
 export function paramCase(source: string) {
-  // do not use lookbehind assertion for Safari compatibility
-  return uncapitalize(source)
-    .replace(/_/g, '-')
-    .replace(/.[A-Z]+/g, str => str[0] + '-' + str.slice(1).toLowerCase())
+  return tokenize(source, [45, 95], 45)
 }
 
 export function snakeCase(source: string) {
-  // do not use lookbehind assertion for Safari compatibility
-  return uncapitalize(source)
-    .replace(/-/g, '_')
-    .replace(/.[A-Z]+/g, str => str[0] + '_' + str.slice(1).toLowerCase())
+  return tokenize(source, [45, 95], 95)
 }
 
 export const camelize = camelCase

@@ -15,11 +15,25 @@ describe('String Manipulations', () => {
   })
 
   it('paramCase', () => {
+    expect(paramCase('AAA')).to.equal('aaa')
+    expect(paramCase('A0A0A')).to.equal('a0a0a')
+    expect(paramCase('AA_AA_AA')).to.equal('aa-aa-aa')
+    expect(paramCase('AaAaA')).to.equal('aa-aa-a')
+    expect(paramCase('aAaAa')).to.equal('a-aa-aa')
+    expect(paramCase('aAAAa')).to.equal('a-aa-aa')
     expect(paramCase('aa-aa_aAA')).to.equal('aa-aa-a-aa')
+    expect(paramCase('aa-aa_aAAa')).to.equal('aa-aa-a-a-aa')
   })
 
   it('snakeCase', () => {
+    expect(snakeCase('AAA')).to.equal('aaa')
+    expect(paramCase('A0A0A')).to.equal('a0a0a')
+    expect(snakeCase('AA-AA-AA')).to.equal('aa_aa_aa')
+    expect(snakeCase('AaAaA')).to.equal('aa_aa_a')
+    expect(snakeCase('aAaAa')).to.equal('a_aa_aa')
+    expect(snakeCase('aAAAa')).to.equal('a_aa_aa')
     expect(snakeCase('aa-aa_aAA')).to.equal('aa_aa_a_aa')
+    expect(snakeCase('aa-aa_aAAa')).to.equal('aa_aa_a_a_aa')
   })
 
   it('formatProperty', () => {
