@@ -35,7 +35,8 @@ export namespace Binary {
     }
   }
 
-  export function toBase64(source: ArrayBufferLike) {
+  export function toBase64(source: Source) {
+    source = fromSource(source)
     if (typeof Buffer !== 'undefined') {
       return Buffer.from(source).toString('base64')
     }
@@ -52,7 +53,8 @@ export namespace Binary {
     return Uint8Array.from(atob(source), c => c.charCodeAt(0))
   }
 
-  export function toHex(source: ArrayBufferLike) {
+  export function toHex(source: Source) {
+    source = fromSource(source)
     if (typeof Buffer !== 'undefined') return Buffer.from(source).toString('hex')
     return Array.from(new Uint8Array(source), byte => byte.toString(16).padStart(2, '0')).join('')
   }
